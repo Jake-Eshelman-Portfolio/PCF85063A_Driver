@@ -1,0 +1,6 @@
+arduino_i2c: &i2c0 {
+	compatible = "nordic,nrf-twi";
+	status = "okay";
+	sda-pin = <13>;
+	scl-pin = <12>;
+};
