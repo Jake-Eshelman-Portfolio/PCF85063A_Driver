@@ -80,21 +80,39 @@ uint8_t initialize_RTC(uint8_t *time_array)
 		return I2C_WRITE_ERR;
 	}
 
-	if (ret != 0) {
-		return I2C_READ_ERR;
-	}
-
 	return SUCCESS;
 }
 
-void read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address)
+// Read from specified registers into provided read buffer, print result. Return read status code.
+uint8_t read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address)
 {
 	uint8_t ret = 0;
 	ret = i2c_burst_read(pcf_85063A, PCF85063A_Address, start_address, read_buffer, size);
+
+	if(ret != SUCCESS)
+	{
+		return ret;
+	}
 
 	for(int i = 0; i < size; i++)
 	{
 		printk("Registers read: %02X \n", read_buffer[i]);
 	}
 
+	return SUCCESS;
+}
+
+// Write to specified registers from provided write buffer. Return read status code.
+uint8_t write_register(uint8_t * write_buffer, uint8_t size, uint8_t start_address)
+{
+	uint8_t ret = 0;
+
+	ret = i2c_burst_write(pcf_85063A, PCF85063A_Address, start_address, write_buffer, size);
+
+	if(ret != SUCCESS)
+	{
+		return ret;
+	}
+
+	return SUCCESS;
 }
