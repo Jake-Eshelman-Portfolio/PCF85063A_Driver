@@ -65,6 +65,7 @@ uint8_t *get_civic_time()
 	return time_array;
 }
 
+// Set the time for the RTC, returns status of initialization and write
 uint8_t initialize_RTC(uint8_t *time_array)
 {
 	pcf_85063A = DEVICE_DT_GET(DT_NODELABEL(i2c0));
@@ -79,12 +80,21 @@ uint8_t initialize_RTC(uint8_t *time_array)
 		return I2C_WRITE_ERR;
 	}
 
-	uint8_t read_buffer[7];
-	ret = i2c_burst_read(pcf_85063A, PCF85063A_Address, RTC_TIME_REGISTER_ADDRESS, read_buffer, RTC_TIME_REGISTER_SIZE);
-
 	if (ret != 0) {
 		return I2C_READ_ERR;
 	}
 
 	return SUCCESS;
+}
+
+void read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address)
+{
+	uint8_t ret = 0;
+	ret = i2c_burst_read(pcf_85063A, PCF85063A_Address, start_address, read_buffer, size);
+
+	for(int i = 0; i < size; i++)
+	{
+		printk("Registers read: %02X \n", read_buffer[i]);
+	}
+
 }
