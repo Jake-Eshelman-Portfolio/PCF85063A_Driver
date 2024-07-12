@@ -20,6 +20,8 @@
 #define I2C_READ_ERR -3
 #define SUCCESS 0
 
+#define INTERRUPT_NODE	DT_NODELABEL(int0)
+
 uint8_t initialize_RTC(uint8_t * time_array);
 uint8_t * get_civic_time();
 uint8_t read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address);

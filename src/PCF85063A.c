@@ -1,9 +1,14 @@
 #include <drivers/i2c.h>
 #include <string.h>
 #include <stdlib.h>
+#include <devicetree.h>
+#include <drivers/gpio.h>
+#include <kernel.h>
 #include "PCF85063A.h"
 
 const struct device *pcf_85063A;
+static const struct gpio_dt_spec int_pin = GPIO_DT_SPEC_GET_OR(INTERRUPT_NODE, gpios,
+                                                               {0});
 
 uint8_t convert_to_bcd(uint8_t decimal)
 {
@@ -65,6 +70,9 @@ uint8_t *get_civic_time()
 	return time_array;
 }
 
+
+
+
 // Set the time for the RTC, returns status of initialization and write
 uint8_t initialize_RTC(uint8_t *time_array)
 {
@@ -72,6 +80,8 @@ uint8_t initialize_RTC(uint8_t *time_array)
 	if (!device_is_ready(pcf_85063A)) {
 		return DEVICE_SETUP_ERR;
 	} 
+
+	pcf_85063A_interrupt = DEVICE_DT_GET(DT_NODELABEL(int_0));
 
 	// Fill time array: sec, min, hr, day(1-31), weekday, month, year
 	int ret = i2c_burst_write(pcf_85063A, PCF85063A_Address, RTC_TIME_REGISTER_ADDRESS, time_array, RTC_TIME_REGISTER_SIZE);
@@ -116,3 +126,5 @@ uint8_t write_register(uint8_t * write_buffer, uint8_t size, uint8_t start_addre
 
 	return SUCCESS;
 }
+
+

@@ -4,3 +4,13 @@ arduino_i2c: &i2c0 {
 	sda-pin = <13>;
 	scl-pin = <12>;
 };
+
+/ {
+	buttons {
+		compatible = "gpio-keys";
+		int0: int_0 {
+			gpios = <&gpio0 14 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "pcf85063A interrupt pin";
+		};
+	};
+};
