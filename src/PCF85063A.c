@@ -8,6 +8,7 @@
 
 const struct device *pcf_85063A;
 static const struct gpio_dt_spec int_gpio = GPIO_DT_SPEC_GET(PCF85063A_INT_NODE, gpios);
+static struct gpio_callback gpio_cb;
 
 uint8_t convert_to_bcd(uint8_t decimal)
 {
@@ -77,10 +78,6 @@ uint8_t initialize_RTC(uint8_t *time_array)
 		printk("Error: i2c device is not ready\n");
 		return DEVICE_SETUP_ERR;
 	}
-	else
-	{
-		printk("i2c0 ready \n");
-	}
 
 	if (!device_is_ready(int_gpio.port)) {
 		printk("Error: interrupt GPIO device is not ready\n");
@@ -98,6 +95,9 @@ uint8_t initialize_RTC(uint8_t *time_array)
 		printk("Error %d: failed to configure interrupt\n", ret);
 		return DEVICE_SETUP_ERR;
 	}
+
+	gpio_init_callback(&gpio_cb, alarm_callback, BIT(int_gpio.pin));
+	gpio_add_callback(int_gpio.port, &gpio_cb);
 
 	// Fill time array: sec, min, hr, day(1-31), weekday, month, year
 	ret = i2c_burst_write(pcf_85063A, PCF85063A_Address, RTC_TIME_REGISTER_ADDRESS,
@@ -140,4 +140,24 @@ uint8_t write_register(uint8_t *write_buffer, uint8_t size, uint8_t start_addres
 	}
 
 	return SUCCESS;
+}
+
+void alarm_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+    printk("Alarm triggered!\n");
+}
+
+uint8_t set_alarm()
+{
+	// Set the control register
+	uint8_t control_2;
+	control_2 |= (1 << 7);
+	write_register(control_2, 1, 0x01);
+
+	// Set the alarm register
+	// sec, min, hour, day, weekday
+	uint8_t alarm_buffer[RTC_ALARM_REGISTER_SIZE] = {0, 0x50, 0x17, 0x12, 0};
+	write_register(alarm_buffer, RTC_TIME_REGISTER_SIZE, RTC_TIME_REGISTER_ADDRESS);
+
+
 }

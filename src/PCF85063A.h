@@ -3,6 +3,7 @@
 
 #define PCF85063A_Address 0x51
 #define PCF85063_register_size 18
+#define RTC_ALARM_REGISTER_SIZE 5
 
 #define SECONDS_INDEX 0
 #define MINUTES_INDEX 1
@@ -13,6 +14,7 @@
 #define YEAR_INDEX 6
 
 #define RTC_TIME_REGISTER_ADDRESS 0x04
+#define RTC_ALARM_REGISTER_ADDRESS 0x0B
 #define RTC_TIME_REGISTER_SIZE 7
 
 #define DEVICE_SETUP_ERR -1
@@ -26,5 +28,7 @@ uint8_t initialize_RTC(uint8_t * time_array);
 uint8_t * get_civic_time();
 uint8_t read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address);
 uint8_t write_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address);
+uint8_t set_alarm(void);
+void alarm_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
 
 #endif
