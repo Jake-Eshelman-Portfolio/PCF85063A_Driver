@@ -126,5 +126,3 @@ uint8_t write_register(uint8_t * write_buffer, uint8_t size, uint8_t start_addre
 
 	return SUCCESS;
 }
-
-
