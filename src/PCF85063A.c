@@ -1,9 +1,9 @@
-#include <drivers/i2c.h>
+#include <zephyr/drivers/i2c.h>
 #include <string.h>
 #include <stdlib.h>
-#include <devicetree.h>
-#include <drivers/gpio.h>
-#include <kernel.h>
+#include <zephyr/devicetree.h>
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/kernel.h>
 #include "PCF85063A.h"
 
 const struct device *pcf_85063A;

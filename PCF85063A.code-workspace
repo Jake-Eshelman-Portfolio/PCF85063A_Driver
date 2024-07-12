@@ -9,7 +9,11 @@
 		"files.associations": {
 			"i2c.h": "c",
 			"kernel.h": "c",
-			"pcf85063a.h": "c"
+			"pcf85063a.h": "c",
+			"printk.h": "c",
+			"string.h": "c",
+			"stdlib.h": "c",
+			"devicetree.h": "c"
 		}
 	}
 }
