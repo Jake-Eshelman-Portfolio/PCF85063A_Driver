@@ -5,11 +5,8 @@
 		}
 	],
 	"settings": {
-		"nrf-connect.toolchain.path": "${nrf-connect.toolchain:2.5.0}",
 		"files.associations": {
-			"i2c.h": "c",
-			"kernel.h": "c",
-			"pcf85063a.h": "c"
+			"printk.h": "c"
 		}
 	}
 }
