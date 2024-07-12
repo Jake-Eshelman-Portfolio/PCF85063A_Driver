@@ -7,8 +7,7 @@
 #include "PCF85063A.h"
 
 const struct device *pcf_85063A;
-static const struct gpio_dt_spec int_pin = GPIO_DT_SPEC_GET_OR(INTERRUPT_NODE, gpios,
-                                                               {0});
+static const struct gpio_dt_spec int_gpio = GPIO_DT_SPEC_GET(PCF85063A_INT_NODE, gpios);
 
 uint8_t convert_to_bcd(uint8_t decimal)
 {
@@ -17,8 +16,8 @@ uint8_t convert_to_bcd(uint8_t decimal)
 
 uint8_t find_month(const char *month_str)
 {
-	const char *months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-				 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+	const char *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+				"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	for (int i = 0; i < 12; i++) {
 		if (strcmp(month_str, months[i]) == 0) {
 			return i + 1;
@@ -34,7 +33,7 @@ uint8_t *get_civic_time()
 	static uint8_t time_array[7];
 
 	// Extract month
-	char month[4] = { date_str[0], date_str[1], date_str[2], '\0' };
+	char month[4] = {date_str[0], date_str[1], date_str[2], '\0'};
 	uint8_t decimal_month = find_month(month);
 	uint8_t bcd_month = convert_to_bcd(decimal_month);
 
@@ -49,7 +48,7 @@ uint8_t *get_civic_time()
 	uint8_t bcd_date = convert_to_bcd(decimal_date);
 
 	// Extract year
-	char year[3] = { date_str[strlen(date_str) - 2], date_str[strlen(date_str) - 1], '\0' };
+	char year[3] = {date_str[strlen(date_str) - 2], date_str[strlen(date_str) - 1], '\0'};
 	uint8_t decimal_year = atoi(year);
 	uint8_t bcd_year = convert_to_bcd(decimal_year);
 
@@ -70,23 +69,42 @@ uint8_t *get_civic_time()
 	return time_array;
 }
 
-
-
-
 // Set the time for the RTC, returns status of initialization and write
 uint8_t initialize_RTC(uint8_t *time_array)
 {
 	pcf_85063A = DEVICE_DT_GET(DT_NODELABEL(i2c0));
 	if (!device_is_ready(pcf_85063A)) {
+		printk("Error: i2c device is not ready\n");
 		return DEVICE_SETUP_ERR;
-	} 
+	}
+	else
+	{
+		printk("i2c0 ready \n");
+	}
 
-	pcf_85063A_interrupt = DEVICE_DT_GET(DT_NODELABEL(int_0));
+	if (!device_is_ready(int_gpio.port)) {
+		printk("Error: interrupt GPIO device is not ready\n");
+		return DEVICE_SETUP_ERR;
+	}
+
+	int ret = gpio_pin_configure_dt(&int_gpio, GPIO_INPUT);
+	if (ret != 0) {
+		printk("Error %d: failed to configure interrupt pin\n", ret);
+		return DEVICE_SETUP_ERR;
+	}
+
+	ret = gpio_pin_interrupt_configure_dt(&int_gpio, GPIO_INT_EDGE_TO_ACTIVE);
+	if (ret != 0) {
+		printk("Error %d: failed to configure interrupt\n", ret);
+		return DEVICE_SETUP_ERR;
+	}
 
 	// Fill time array: sec, min, hr, day(1-31), weekday, month, year
-	int ret = i2c_burst_write(pcf_85063A, PCF85063A_Address, RTC_TIME_REGISTER_ADDRESS, time_array, RTC_TIME_REGISTER_SIZE);
+	ret = i2c_burst_write(pcf_85063A, PCF85063A_Address, RTC_TIME_REGISTER_ADDRESS,
+				  time_array, RTC_TIME_REGISTER_SIZE);
 
 	if (ret != 0) {
+		printk("Error %d: i2c burst write failed\n", ret);
 		return I2C_WRITE_ERR;
 	}
 
@@ -94,18 +112,16 @@ uint8_t initialize_RTC(uint8_t *time_array)
 }
 
 // Read from specified registers into provided read buffer, print result. Return read status code.
-uint8_t read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address)
+uint8_t read_register(uint8_t *read_buffer, uint8_t size, uint8_t start_address)
 {
 	uint8_t ret = 0;
 	ret = i2c_burst_read(pcf_85063A, PCF85063A_Address, start_address, read_buffer, size);
 
-	if(ret != SUCCESS)
-	{
+	if (ret != SUCCESS) {
 		return ret;
 	}
 
-	for(int i = 0; i < size; i++)
-	{
+	for (int i = 0; i < size; i++) {
 		printk("Registers read: %02X \n", read_buffer[i]);
 	}
 
@@ -113,14 +129,13 @@ uint8_t read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address
 }
 
 // Write to specified registers from provided write buffer. Return read status code.
-uint8_t write_register(uint8_t * write_buffer, uint8_t size, uint8_t start_address)
+uint8_t write_register(uint8_t *write_buffer, uint8_t size, uint8_t start_address)
 {
 	uint8_t ret = 0;
 
 	ret = i2c_burst_write(pcf_85063A, PCF85063A_Address, start_address, write_buffer, size);
 
-	if(ret != SUCCESS)
-	{
+	if (ret != SUCCESS) {
 		return ret;
 	}
 

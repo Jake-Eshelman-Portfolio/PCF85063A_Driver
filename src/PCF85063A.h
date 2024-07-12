@@ -20,7 +20,7 @@
 #define I2C_READ_ERR -3
 #define SUCCESS 0
 
-#define INTERRUPT_NODE	DT_NODELABEL(int0)
+#define PCF85063A_INT_NODE DT_NODELABEL(pcf85063a_int1)
 
 uint8_t initialize_RTC(uint8_t * time_array);
 uint8_t * get_civic_time();
