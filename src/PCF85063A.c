@@ -161,7 +161,6 @@ uint8_t set_alarm()
 	uint8_t read[1];
 	// Set the control register
 	uint8_t control_2[1];
-	// Clear the AF bit (bit 6) and set the AIE bit (bit 7)
 	control_2[0] = 0x80;
 	write_register(control_2, 1, 0x01);
 	printk("\n \n \n register read after control bit set \n \n \n");
