@@ -9,6 +9,7 @@
 const struct device *pcf_85063A;
 static const struct gpio_dt_spec int_gpio = GPIO_DT_SPEC_GET(PCF85063A_INT_NODE, gpios);
 static struct gpio_callback gpio_cb;
+static struct k_work alarm_work;
 
 uint8_t convert_to_bcd(uint8_t decimal)
 {
@@ -142,22 +143,37 @@ uint8_t write_register(uint8_t *write_buffer, uint8_t size, uint8_t start_addres
 	return SUCCESS;
 }
 
+static void alarm_work_handler(struct k_work *work)
+{
+    uint8_t read_buffer[18];
+    read_register(read_buffer, 18, 0X00);
+}
+
 void alarm_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    printk("Alarm triggered!\n");
+    printk("Alarm triggered!, checking time\n \n \n");
+	k_work_submit(&alarm_work);
 }
 
 uint8_t set_alarm()
 {
+	uint8_t read_buffer[18];
+	uint8_t read[1];
 	// Set the control register
-	uint8_t control_2;
-	control_2 |= (1 << 7);
+	uint8_t control_2[1];
+	// Clear the AF bit (bit 6) and set the AIE bit (bit 7)
+	control_2[0] = 0x80;
 	write_register(control_2, 1, 0x01);
+	printk("\n \n \n register read after control bit set \n \n \n");
+	read_register(read, 1, 0X01);
+	// dummy time {0,0x10,0x10,0x12,0,0x7,0x24}; sec, min, hr, day(1-31), weekday, month, year
 
 	// Set the alarm register
 	// sec, min, hour, day, weekday
-	uint8_t alarm_buffer[RTC_ALARM_REGISTER_SIZE] = {0, 0x50, 0x17, 0x12, 0};
-	write_register(alarm_buffer, RTC_TIME_REGISTER_SIZE, RTC_TIME_REGISTER_ADDRESS);
+	uint8_t alarm_buffer[RTC_ALARM_REGISTER_SIZE] = {0x10, 0x10, 0x10, 0x12, 0};
+	write_register(alarm_buffer, RTC_ALARM_REGISTER_SIZE, RTC_ALARM_REGISTER_ADDRESS);
 
-
+	printk("register read after alarm set \n");
+	read_register(read_buffer, 18, 0X00);
+	k_work_init(&alarm_work, alarm_work_handler);
 }

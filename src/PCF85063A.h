@@ -24,11 +24,13 @@
 
 #define PCF85063A_INT_NODE DT_NODELABEL(pcf85063a_int1)
 
+
 uint8_t initialize_RTC(uint8_t * time_array);
 uint8_t * get_civic_time();
 uint8_t read_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address);
 uint8_t write_register(uint8_t * read_buffer, uint8_t size, uint8_t start_address);
 uint8_t set_alarm(void);
 void alarm_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
+static void alarm_work_handler(struct k_work *work);
 
 #endif

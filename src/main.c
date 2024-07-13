@@ -5,13 +5,20 @@
 int main(void)
 {
         uint8_t ret;
+        // this programs the build time and doesnt update on flashing
         uint8_t * time_array = get_civic_time();
-        uint8_t read_buffer[RTC_TIME_REGISTER_SIZE];
-        uint8_t write_buffer[RTC_TIME_REGISTER_SIZE] = {0,0,0,0,0,0,0};
-        ret = initialize_RTC(time_array);
-        //read_register(read_buffer,RTC_TIME_REGISTER_SIZE, 0X04);
+        uint8_t read_buffer[18];
+
+        // Fill time array: sec, min, hr, day(1-31), weekday, month, year
+        uint8_t write_buffer[RTC_TIME_REGISTER_SIZE] = {0,0x10,0x10,0x12,0,0x7,0x24};
+        // ret = initialize_RTC(time_array);
+        ret = initialize_RTC(write_buffer);
+        printk("before alarm set \n");
+
+        read_register(read_buffer,18, 0X00);
+        set_alarm();
 
 
-        printk("init ret: %d \n", ret);
+        //printk("init ret: %d \n", ret);
         return 0;
 }
