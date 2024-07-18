@@ -1,0 +1,34 @@
+PROJECT_NAME           = "PCF85063A RTC Driver"
+PROJECT_BRIEF          = "Zephyr driver for PCF85063A Real-Time Clock"
+
+INPUT                  = D:/Development/ncs/v2.5.0/zephyr/samples/sensor/pcf85063a/src
+FILE_PATTERNS          = *.c *.h *.cpp *.hpp
+RECURSIVE              = YES
+
+OUTPUT_DIRECTORY       = ./doc
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+OPTIMIZE_OUTPUT_FOR_C  = YES
+JAVADOC_AUTOBRIEF      = YES
+
+HAVE_DOT               = NO
+
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = YES
+PREDEFINED             = __ZEPHYR__=1 \
+                         CONFIG_LOG=1 \
+                         CONFIG_PCF85063A=1
+
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+
+ALPHABETICAL_INDEX     = YES
