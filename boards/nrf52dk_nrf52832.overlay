@@ -3,6 +3,7 @@
         group1 {
             psels = <NRF_PSEL(TWIM_SDA, 0, 13)>,
                     <NRF_PSEL(TWIM_SCL, 0, 12)>;
+                    bias-pull-up;
         };
     };
 
@@ -21,4 +22,14 @@ arduino_i2c: &i2c0 {
     pinctrl-0 = <&i2c0_default>;
     pinctrl-1 = <&i2c0_sleep>;
     pinctrl-names = "default", "sleep";
+};
+
+/ {
+    pcf85063a_int: pcf85063a_int {
+        compatible = "gpio-keys";
+        pcf85063a_int1: pcf85063a_int1 {
+            gpios = <&gpio0 14 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+            label = "PCF85063A Interrupt";
+        };
+    };
 };
