@@ -13,10 +13,9 @@ int main(void)
         uint8_t write_buffer[RTC_TIME_REGISTER_SIZE] = {0,0x10,0x10,0x12,0,0x7,0x24};
         // ret = initialize_RTC(time_array);
         ret = initialize_RTC(write_buffer);
-        printk("before alarm set \n");
-
+        uint8_t alarm_buffer[RTC_ALARM_REGISTER_SIZE] = {0x10, 0x10, 0x10, 0x12, 0};
         read_register(read_buffer,18, 0X00);
-        set_alarm();
+        set_alarm(alarm_buffer, 5);
 
 
         //printk("init ret: %d \n", ret);
