@@ -2,7 +2,8 @@
 # PCF85063A RTC Driver Overview
 
 ## Introduction
-This driver provides an interface for the PCF85063A Real-Time Clock (RTC) chip, designed for use with the Zephyr RTOS, and was built on the nRF52dk with testing through Unity/Ztest. It enables precise timekeeping and alarm functionality in embedded systems.
+This driver provides an interface for the PCF85063A Real-Time Clock (RTC) chip, designed for use with the Zephyr RTOS, 
+and was built on the nRF52dk with testing through Unity/Ztest. It enables precise timekeeping and alarm functionality in embedded systems.
 
 ## Key Features
 - RTC initialization and configuration
@@ -12,7 +13,8 @@ This driver provides an interface for the PCF85063A Real-Time Clock (RTC) chip, 
 - Unit testing through Unity/Ztest
 
 ## Architecture
-The driver is structured around core RTC operations, utilizing Zephyr's I2C and GPIO subsystems with asynchronous interrupt handling. It employs a modular design with separate functions for each major operation, enhancing maintainability and allowing for easy expansion of functionality. 
+The driver is structured around core RTC operations, utilizing Zephyr's I2C and GPIO subsystems with asynchronous interrupt handling. 
+It employs a modular design with separate functions for each major operation, enhancing maintainability and allowing for easy expansion of functionality. 
 
 ## Integration
 To integrate this driver into your Zephyr project:
