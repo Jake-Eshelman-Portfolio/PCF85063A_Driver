@@ -290,7 +290,8 @@ rtc_error_t write_register(const uint8_t *write_buffer, const uint8_t size, cons
 }
 
 /**
- * @brief Placeholder function, currently reads all registers when alarm is called
+ * @brief Placeholder function, currently reads all registers when alarm is called 
+ * and sets alarm_trigger to true for validation in testing
  *
  * @param work Pointer to the work structure
  */
