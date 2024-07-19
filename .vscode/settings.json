@@ -3,6 +3,7 @@
     "files.associations": {
         "i2c.h": "c",
         "kernel.h": "c",
-        "pcf85063a.h": "c"
+        "pcf85063a.h": "c",
+        "log.h": "c"
     }
 }
