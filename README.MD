@@ -30,13 +30,85 @@ To integrate this driver into your Zephyr project:
 2. Configure your project's devicetree to include the PCF85063A device.
 3. Enable necessary Zephyr configurations (I2C, GPIO) in your project's `.conf` file.
 
-## Builds and Testing
+## Build Instructions
 
-- `build` is the default build, enabling all functionality of RTC
-- `build_unity` conditionally compiles Ztest and the test directory. To run tests:
-    1. `build_unity`
-    2. Erase and flash to board
-    3. `pcf85063a_tests` will run and print results to serial output
+### Prerequisites
+
+- nRF Connect SDK 2.5.0
+- GNU Arm Embedded Toolchain
+- CMake
+
+### Building the Project
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/yourusername/yourproject.git
+   cd yourproject
+   ```
+
+2. **Set Up the Environment**
+
+   Source the environment script provided by the nRF Connect SDK:
+
+   ```bash
+   source /path/to/nrfconnect-sdk/zephyr/zephyr-env.sh
+   ```
+
+3. **Configure the Normal Build**
+
+   Configure the normal build using CMake with the specified arguments:
+
+   ```bash
+   cmake -B build -GNinja \
+     -DBOARD_ROOT="./zephyr/samples/sensor/pcf85063a" \
+     -DCACHED_CONF_FILE="./zephyr/samples/sensor/pcf85063a/prj.conf"
+   ```
+
+4. **Build the Normal Project**
+
+   Build the normal project using CMake:
+
+   ```bash
+   cmake --build build
+   ```
+
+5. **Configure the Unity Build for Unit Testing**
+
+   Configure the unity build for unit testing using CMake with the specified arguments:
+
+   ```bash
+   cmake -B build_unity -GNinja \
+     -DBOARD_ROOT="./zephyr/samples/sensor/pcf85063a" \
+     -DUNIT_TEST="1" \
+     -DCONFIG_ZTEST="y" \
+     -DCACHED_CONF_FILE="./zephyr/samples/sensor/pcf85063a/prj.conf"
+   ```
+
+6. **Build the Unity Project for Unit Testing**
+
+   Build the unity project for unit testing using CMake:
+
+   ```bash
+   cmake --build build_unity
+   ```
+
+7. **Flash the Project**
+
+   Flash the compiled binaries to the device:
+
+   ```bash
+   nrfjprog --program build/zephyr/zephyr.hex --chiperase
+   nrfjprog --reset
+   ```
+
+8. **Run the Unit Tests**
+
+   To run the unit tests, follow these steps (assuming `pcf85063a_tests` is the test executable):
+
+   ```bash
+   build_unity/zephyr/pcf85063a_tests
+   ```
 
 ## Usage
 
