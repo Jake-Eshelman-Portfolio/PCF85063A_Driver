@@ -40,8 +40,10 @@ typedef enum {
     RTC_ERROR_GPIO_CONFIG = -5,
 } rtc_error_t;
 
-
 uint8_t * get_civic_time();
+uint8_t extract_time_component(const char *time_str, int index);
+uint8_t find_month(const char *month_str);
+uint8_t find_month(const char *month_str);
 
 rtc_error_t initialize_RTC(const uint8_t *time_array);
 rtc_error_t read_register(uint8_t *read_buffer, const uint8_t size, const uint8_t start_address);

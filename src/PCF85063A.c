@@ -13,12 +13,18 @@ static const struct gpio_dt_spec int_gpio = GPIO_DT_SPEC_GET(PCF85063A_INT_NODE,
 static struct gpio_callback gpio_cb;
 static struct k_work alarm_work;
 
-static inline uint8_t convert_to_bcd(uint8_t decimal)
+
+uint8_t extract_time_component(const char *time_str, int index)
+{
+    return ((time_str[index] - '0') << BCD_SHIFT) | (time_str[index + 1] - '0');
+}
+
+uint8_t convert_to_bcd(uint8_t decimal)
 {
 	return ((decimal / 10) << BCD_SHIFT) | (decimal % 10);
 }
 
-static inline uint8_t find_month(const char *month_str)
+uint8_t find_month(const char *month_str)
 {
 	const char *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
 				"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -28,11 +34,6 @@ static inline uint8_t find_month(const char *month_str)
 		}
 	}
 	return 0;
-}
-
-static inline uint8_t extract_time_component(const char *time_str, int index)
-{
-    return ((time_str[index] - '0') << BCD_SHIFT) | (time_str[index + 1] - '0');
 }
 
 /**
