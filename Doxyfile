@@ -1,8 +1,9 @@
 PROJECT_NAME           = "PCF85063A RTC Driver"
 PROJECT_BRIEF          = "Zephyr driver for PCF85063A Real-Time Clock"
 
-INPUT                  = D:/Development/ncs/v2.5.0/zephyr/samples/sensor/pcf85063a/src \
-                         D:/Development/ncs/v2.5.0/zephyr/samples/sensor/pcf85063a/tests
+INPUT                  = ./src \
+                         ./tests
+
 FILE_PATTERNS          = *.c *.h *.cpp *.hpp
 RECURSIVE              = YES
 
