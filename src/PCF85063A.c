@@ -126,7 +126,7 @@ rtc_error_t initialize_RTC(const uint8_t *time_array)
         time_array[HOURS_INDEX] > 0x23 ||
         time_array[DATE_INDEX] > 0x31 ||
         time_array[WEEKDAY_INDEX] != 0 ||
-		time_array[MONTH_INDEX] > 0x31 ||
+		time_array[MONTH_INDEX] > 0x12 ||
         time_array[YEAR_INDEX] == 0) {
 
         LOG_ERR("Invalid time array values \n");

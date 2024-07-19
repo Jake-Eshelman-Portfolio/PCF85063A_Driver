@@ -33,7 +33,31 @@ ZTEST(pcf85063a_tests, test_get_civic_time)
 {
     uint8_t *time_array = get_civic_time();
     zassert_not_null(time_array, "get_civic_time returned NULL");
-    // Note: Specific value checks are not possible as it depends on compile time
+    
+    // Verify the time format (e.g., hours, minutes, seconds)
+    // Assuming time_array is in [seconds, minutes, hours, day, date, month, year] format
+    zassert_true(time_array[0] < 60, "Invalid seconds value %d", time_array[0]);
+    zassert_true(time_array[1] < 60, "Invalid minutes value");
+    zassert_true(time_array[2] < 24, "Invalid hours value");
+    zassert_true(time_array[3] > 0 && time_array[3] <= 31, "Invalid day value, %d", time_array[3]);
+    zassert_true(time_array[4] == 0, "Invalid date value"); // This is not set as it is unncessary in clock and difficult to obtain
+    zassert_true(time_array[5] >= 1 && time_array[5] <= 12, "Invalid month value");
+    zassert_true(time_array[6] <= 99, "Invalid year value");
+
+    // Verify consistency
+    uint8_t *time_array2 = get_civic_time();
+    zassert_not_null(time_array2, "get_civic_time returned NULL on second call");
+    zassert_mem_equal(time_array, time_array2, RTC_TIME_REGISTER_SIZE, "Inconsistent time returned by get_civic_time");
+    
+    // Check the time format and range in more detail
+    // Assuming the function returns an array of uint8_t in BCD format
+    for (int i = 0; i < RTC_TIME_REGISTER_SIZE; i++) {
+        zassert_true((time_array[i] & 0xF0) <= 0x90, "Invalid BCD format (high nibble) at index %d", i);
+        zassert_true((time_array[i] & 0x0F) <= 0x09, "Invalid BCD format (low nibble) at index %d", i);
+    }
+    
+    // Optionally simulate edge cases (e.g., near midnight)
+    // This might require mocking or setting the RTC to a specific time
 }
 
 ZTEST(pcf85063a_tests, test_initialize_rtc)
@@ -74,7 +98,6 @@ ZTEST(pcf85063a_tests, test_set_alarm)
     zassert_mem_equal(alarm_buffer, read_buffer, RTC_ALARM_REGISTER_SIZE, "Alarm not set correctly");
 }
 
-#ifndef TEST_ALARM
 ZTEST(pcf85063a_tests, test_alarm)
 {
     // Set current time (e.g., 12:00:00)
@@ -83,7 +106,7 @@ ZTEST(pcf85063a_tests, test_alarm)
     zassert_equal(ret, RTC_SUCCESS, "Failed to set current time");
 
     // Set alarm for 5 seconds later (12:00:05)
-    uint8_t alarm_time[RTC_ALARM_REGISTER_SIZE] = {0x05, 0x00, 0x12, 0x15, 0x00};
+    uint8_t alarm_time[RTC_ALARM_REGISTER_SIZE] = {0x02, 0x00, 0x12, 0x15, 0x00};
     ret = set_alarm(alarm_time, RTC_ALARM_REGISTER_SIZE);
     zassert_equal(ret, RTC_SUCCESS, "Failed to set alarm");
 
@@ -96,8 +119,6 @@ ZTEST(pcf85063a_tests, test_alarm)
     // Check if alarm triggered
     zassert_true(alarm_trigger, "Alarm did not trigger within expected time");
 }
-#endif
-
 
 ZTEST(pcf85063a_tests, test_error_handling)
 {
