@@ -14,17 +14,45 @@ static struct gpio_callback gpio_cb;
 static struct k_work alarm_work;
 volatile bool alarm_trigger = false;
 
-
+/**
+ * @brief Extracts a time component from a string and converts it to BCD format
+ *
+ * This function takes a time string (typically in the format "HH:MM:SS")
+ * and extracts a two-digit component starting at the specified index.
+ * It then converts this component to Binary Coded Decimal (BCD) format.
+ *
+ * @param time_str Pointer to the time string
+ * @param index Starting index of the time component to extract
+ * @return uint8_t The extracted time component in BCD format
+ */
 uint8_t extract_time_component(const char *time_str, int index)
 {
     return ((time_str[index] - '0') << BCD_SHIFT) | (time_str[index + 1] - '0');
 }
 
+/**
+ * @brief Converts a decimal number to Binary Coded Decimal (BCD) format
+ *
+ * This function takes a decimal number (0-99) and converts it to BCD format.
+ * In BCD, each decimal digit is encoded in four bits.
+ *
+ * @param decimal The decimal number to convert (0-99)
+ * @return uint8_t The input number in BCD format
+ */
 uint8_t convert_to_bcd(uint8_t decimal)
 {
 	return ((decimal / 10) << BCD_SHIFT) | (decimal % 10);
 }
 
+/**
+ * @brief Converts a month name to its corresponding number
+ *
+ * This function takes a three-letter month name (e.g., "Jan", "Feb")
+ * and returns the corresponding month number (1-12).
+ *
+ * @param month_str Pointer to the month name string (3 characters)
+ * @return uint8_t The month number (1-12), or 0 if the month is not recognized
+ */
 uint8_t find_month(const char *month_str)
 {
 	const char *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
