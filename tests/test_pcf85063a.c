@@ -1,6 +1,9 @@
 #include <zephyr/ztest.h>
 #include "PCF85063A.h"
 
+//#define TEST_ALARM
+
+
 ZTEST_SUITE(pcf85063a_tests, NULL, NULL, NULL, NULL, NULL);
 
 ZTEST(pcf85063a_tests, test_convert_to_bcd)
@@ -70,6 +73,31 @@ ZTEST(pcf85063a_tests, test_set_alarm)
     zassert_equal(ret, RTC_SUCCESS, "Failed to read back alarm");
     zassert_mem_equal(alarm_buffer, read_buffer, RTC_ALARM_REGISTER_SIZE, "Alarm not set correctly");
 }
+
+#ifndef TEST_ALARM
+ZTEST(pcf85063a_tests, test_alarm)
+{
+    // Set current time (e.g., 12:00:00)
+    uint8_t current_time[RTC_TIME_REGISTER_SIZE] = {0x00, 0x00, 0x12, 0x15, 0x00, 0x07, 0x23};
+    rtc_error_t ret = initialize_RTC(current_time);
+    zassert_equal(ret, RTC_SUCCESS, "Failed to set current time");
+
+    // Set alarm for 5 seconds later (12:00:05)
+    uint8_t alarm_time[RTC_ALARM_REGISTER_SIZE] = {0x05, 0x00, 0x12, 0x15, 0x00};
+    ret = set_alarm(alarm_time, RTC_ALARM_REGISTER_SIZE);
+    zassert_equal(ret, RTC_SUCCESS, "Failed to set alarm");
+
+    // Wait for alarm to trigger (with timeout)
+    int64_t start_time = k_uptime_get();
+    while (!alarm_trigger && (k_uptime_get() - start_time < 10000)) {
+        k_sleep(K_MSEC(100));
+    }
+
+    // Check if alarm triggered
+    zassert_true(alarm_trigger, "Alarm did not trigger within expected time");
+}
+#endif
+
 
 ZTEST(pcf85063a_tests, test_error_handling)
 {

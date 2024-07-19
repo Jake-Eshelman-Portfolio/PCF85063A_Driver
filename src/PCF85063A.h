@@ -40,6 +40,8 @@ typedef enum {
     RTC_ERROR_GPIO_CONFIG = -5,
 } rtc_error_t;
 
+extern volatile bool alarm_trigger;
+
 uint8_t * get_civic_time();
 uint8_t extract_time_component(const char *time_str, int index);
 uint8_t find_month(const char *month_str);

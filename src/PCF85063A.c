@@ -12,6 +12,7 @@ static const struct device *pcf_85063A;
 static const struct gpio_dt_spec int_gpio = GPIO_DT_SPEC_GET(PCF85063A_INT_NODE, gpios);
 static struct gpio_callback gpio_cb;
 static struct k_work alarm_work;
+volatile bool alarm_trigger = false;
 
 
 uint8_t extract_time_component(const char *time_str, int index)
@@ -269,6 +270,7 @@ static void alarm_work_handler(struct k_work *work)
 {
 	uint8_t read_buffer[RTC_REGISTER_SIZE] = {0};
 	read_register(read_buffer, RTC_REGISTER_SIZE, 0X00);
+	alarm_trigger = true;
 }
 
 
