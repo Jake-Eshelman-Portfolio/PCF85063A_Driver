@@ -48,19 +48,19 @@ ZTEST(pcf85063a_tests, test_initialize_rtc)
 
 ZTEST(pcf85063a_tests, test_read_write_register)
 {
-    uint8_t write_buffer[4] = {0x12, 0x34, 0x56, 0x78};
-    rtc_error_t ret = write_register(write_buffer, sizeof(write_buffer), 0x00);
+    uint8_t write_buffer[3] = {0x34, 0x56, 0x78};
+    rtc_error_t ret = write_register(write_buffer, sizeof(write_buffer), 0x01);
     zassert_equal(ret, RTC_SUCCESS, "write_register failed");
 
-    uint8_t read_buffer[4];
-    ret = read_register(read_buffer, sizeof(read_buffer), 0x00);
+    uint8_t read_buffer[3];
+    ret = read_register(read_buffer, sizeof(read_buffer), 0x01);
     zassert_equal(ret, RTC_SUCCESS, "read_register failed");
     zassert_mem_equal(write_buffer, read_buffer, sizeof(read_buffer), "Read data doesn't match written data");
 }
 
 ZTEST(pcf85063a_tests, test_set_alarm)
 {
-    uint8_t alarm_buffer[RTC_ALARM_REGISTER_SIZE] = {0x30, 0x45, 0x12, 0x15, 0x03};
+    uint8_t alarm_buffer[RTC_ALARM_REGISTER_SIZE] = {0x30, 0x45, 0x12, 0x15, 0x00};
     rtc_error_t ret = set_alarm(alarm_buffer, RTC_ALARM_REGISTER_SIZE);
     zassert_equal(ret, RTC_SUCCESS, "set_alarm failed");
     
