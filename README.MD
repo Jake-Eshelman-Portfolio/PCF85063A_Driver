@@ -1,11 +1,11 @@
-```markdown
 # PCF85063A RTC Driver Overview
 
 ## Introduction
 
 This driver provides an interface for the PCF85063A Real-Time Clock (RTC) chip, 
 designed for use with the Zephyr RTOS, and was built on the nRF52dk with testing 
-through Unity/Ztest. It enables precise timekeeping and alarm functionality in embedded systems.
+through Unity/Ztest. It enables precise timekeeping and alarm functionality in 
+embedded systems.
 
 ## Key Features
 
@@ -14,6 +14,7 @@ through Unity/Ztest. It enables precise timekeeping and alarm functionality in e
 - Alarm configuration and handling
 - Register-level read and write operations
 - Unit testing through Unity/Ztest
+- Documentation handled by Doxygen: /docs/html/index.html
 
 ## Architecture
 
@@ -25,17 +26,17 @@ enhancing maintainability and allowing for easy expansion of functionality.
 ## Integration
 
 To integrate this driver into your Zephyr project:
-1. Include the driver files (PCF85063A.c and PCF85063A.h) in your project.
+1. Include the driver files (`PCF85063A.c` and `PCF85063A.h`) in your project.
 2. Configure your project's devicetree to include the PCF85063A device.
-3. Enable necessary Zephyr configurations (I2C, GPIO) in your project's .conf file.
+3. Enable necessary Zephyr configurations (I2C, GPIO) in your project's `.conf` file.
 
 ## Builds and Testing
 
-- build is the default build, enables all functionality of RTC
-- build_unity conditionally compiles Ztest and the test directory. To run tests:
-    1. build_unity
+- `build` is the default build, enabling all functionality of RTC
+- `build_unity` conditionally compiles Ztest and the test directory. To run tests:
+    1. `build_unity`
     2. Erase and flash to board
-    3. pcf85063a_tests will run and print results to serial output
+    3. `pcf85063a_tests` will run and print results to serial output
 
 ## Usage
 
@@ -64,18 +65,15 @@ For detailed API usage, refer to the Doxygen-generated documentation: /docs/html
 - Currently supports only 24-hour time format
 - Alarm functionality limited to date/time matching (no periodic alarms)
 
-## Future improvements:
+## Future Improvements
 
 - Add support for periodic alarms
 - Implement power management features of the PCF85063A
 - Implement timer features
 - Extend test suite to cover a wider range of cases for read/write operations
-- Add python based interface for ease of programming and setting alarm
+- Add Python-based interface for ease of programming and setting alarms
 
-
-
-## Additional resources
+## Additional Resources
 
 - [PCF85063A Datasheet](https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf)
 - [Zephyr RTOS Documentation](https://docs.zephyrproject.org/)
-```
