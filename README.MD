@@ -118,7 +118,11 @@ ret = set_alarm(alarm_buffer, RTC_ALARM_REGISTER_SIZE);
 
 For detailed API usage, refer to the Doxygen-generated documentation: /docs/html/index.html
 
-## Dependencies
+# Testing
+- flash the build_unity compiled binary to the board
+- test suite will run automatically and print test results over serial output
+
+# Dependencies
 
 - Zephyr RTOS (tested with version 1.0)
 - Zephyr I2C Driver
