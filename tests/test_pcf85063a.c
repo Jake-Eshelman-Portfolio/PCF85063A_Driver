@@ -36,13 +36,13 @@ ZTEST(pcf85063a_tests, test_get_civic_time)
     
     // Verify the time format (e.g., hours, minutes, seconds)
     // Assuming time_array is in [seconds, minutes, hours, day, date, month, year] format
-    zassert_true(time_array[0] < 60, "Invalid seconds value %d", time_array[0]);
-    zassert_true(time_array[1] < 60, "Invalid minutes value");
-    zassert_true(time_array[2] < 24, "Invalid hours value");
-    zassert_true(time_array[3] > 0 && time_array[3] <= 31, "Invalid day value, %d", time_array[3]);
+    zassert_true(time_array[0] <= 0x60, "Invalid seconds value %d", time_array[0]);
+    zassert_true(time_array[1] <= 0x60, "Invalid minutes value");
+    zassert_true(time_array[2] < 0x24, "Invalid hours value");
+    zassert_true(time_array[3] > 0x00 && time_array[3] <= 0x31, "Invalid day value, %d", time_array[3]);
     zassert_true(time_array[4] == 0, "Invalid date value"); // This is not set as it is unncessary in clock and difficult to obtain
-    zassert_true(time_array[5] >= 1 && time_array[5] <= 12, "Invalid month value");
-    zassert_true(time_array[6] <= 99, "Invalid year value");
+    zassert_true(time_array[5] >= 0x01 && time_array[5] <= 0x012, "Invalid month value");
+    zassert_true(time_array[6] <= 0x99, "Invalid year value");
 
     // Verify consistency
     uint8_t *time_array2 = get_civic_time();
@@ -57,7 +57,6 @@ ZTEST(pcf85063a_tests, test_get_civic_time)
     }
     
     // Optionally simulate edge cases (e.g., near midnight)
-    // This might require mocking or setting the RTC to a specific time
 }
 
 ZTEST(pcf85063a_tests, test_initialize_rtc)
@@ -71,6 +70,17 @@ ZTEST(pcf85063a_tests, test_initialize_rtc)
     ret = read_register(read_buffer, RTC_TIME_REGISTER_SIZE, RTC_TIME_REGISTER_ADDRESS);
     zassert_equal(ret, RTC_SUCCESS, "Failed to read back time");
     zassert_mem_equal(time_array, read_buffer, RTC_TIME_REGISTER_SIZE, "Time not set correctly");
+
+    // Verify clock is keeping time correctly
+    // Set current time (e.g., 12:00:00)
+    uint8_t current_time[RTC_TIME_REGISTER_SIZE] = {0x00, 0x00, 0x12, 0x15, 0x00, 0x07, 0x23};
+    ret = write_register(current_time, sizeof(current_time), RTC_TIME_REGISTER_ADDRESS);
+    zassert_equal(ret, RTC_SUCCESS, "Failed to set current time");
+
+    k_msleep(3000);
+    ret = read_register(read_buffer, RTC_TIME_REGISTER_SIZE, RTC_TIME_REGISTER_ADDRESS);
+    zassert_equal(ret, RTC_SUCCESS, "Failed to read back time");
+    zassert_true(read_buffer[0] > 2, "Clock seconds not progressing correctly");
 }
 
 ZTEST(pcf85063a_tests, test_read_write_register)
