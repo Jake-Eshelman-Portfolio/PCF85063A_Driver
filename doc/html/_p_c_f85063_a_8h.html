@@ -92,7 +92,8 @@ $(function(){ initResizable(false); });
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">PCF85063A.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -171,6 +172,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a4af07e6fd6d8d9e5082437f5dbdc2748" id="r_a4af07e6fd6d8d9e5082437f5dbdc2748"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4af07e6fd6d8d9e5082437f5dbdc2748">get_civic_time</a> ()</td></tr>
 <tr class="memdesc:a4af07e6fd6d8d9e5082437f5dbdc2748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the civic time in BCD format.  <br /></td></tr>
 <tr class="separator:a4af07e6fd6d8d9e5082437f5dbdc2748"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00eb0f658f4e5e14a71b2005c200ea2f" id="r_a00eb0f658f4e5e14a71b2005c200ea2f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00eb0f658f4e5e14a71b2005c200ea2f">extract_time_component</a> (const char *time_str, int index)</td></tr>
+<tr class="memdesc:a00eb0f658f4e5e14a71b2005c200ea2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts a time component from a string and converts it to BCD format.  <br /></td></tr>
+<tr class="separator:a00eb0f658f4e5e14a71b2005c200ea2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a2d4ff2ddb25d0a7b0dbebb1a020dc" id="r_ad6a2d4ff2ddb25d0a7b0dbebb1a020dc"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6a2d4ff2ddb25d0a7b0dbebb1a020dc">find_month</a> (const char *month_str)</td></tr>
+<tr class="memdesc:ad6a2d4ff2ddb25d0a7b0dbebb1a020dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a month name to its corresponding number.  <br /></td></tr>
+<tr class="separator:ad6a2d4ff2ddb25d0a7b0dbebb1a020dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae08a60da9e82d3f9ce0277ad67f597a7" id="r_ae08a60da9e82d3f9ce0277ad67f597a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#accd7d261b7517cc1d35e97409c993381">rtc_error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae08a60da9e82d3f9ce0277ad67f597a7">initialize_RTC</a> (const uint8_t *time_array)</td></tr>
 <tr class="memdesc:ae08a60da9e82d3f9ce0277ad67f597a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the time for the RTC.  <br /></td></tr>
 <tr class="separator:ae08a60da9e82d3f9ce0277ad67f597a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,6 +190,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ab89b44d0a358ec7171d8448414acf07c" id="r_ab89b44d0a358ec7171d8448414acf07c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#accd7d261b7517cc1d35e97409c993381">rtc_error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab89b44d0a358ec7171d8448414acf07c">set_alarm</a> (const uint8_t *alarm_buffer, const size_t size)</td></tr>
 <tr class="memdesc:ab89b44d0a358ec7171d8448414acf07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the alarm with a given time in BCD format.  <br /></td></tr>
 <tr class="separator:ab89b44d0a358ec7171d8448414acf07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a44609a4db2a0b865169300dd1d3e2f51" id="r_a44609a4db2a0b865169300dd1d3e2f51"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44609a4db2a0b865169300dd1d3e2f51">alarm_trigger</a></td></tr>
+<tr class="separator:a44609a4db2a0b865169300dd1d3e2f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="adfeecff1da1760879891bf22dbc39e0f" name="adfeecff1da1760879891bf22dbc39e0f"></a>
@@ -595,6 +607,69 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a00eb0f658f4e5e14a71b2005c200ea2f" name="a00eb0f658f4e5e14a71b2005c200ea2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00eb0f658f4e5e14a71b2005c200ea2f">&#9670;&#160;</a></span>extract_time_component()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t extract_time_component </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>time_str</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>index</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Extracts a time component from a string and converts it to BCD format. </p>
+<p>This function takes a time string (typically in the format "HH:MM:SS") and extracts a two-digit component starting at the specified index. It then converts this component to Binary Coded Decimal (BCD) format.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time_str</td><td>Pointer to the time string </td></tr>
+    <tr><td class="paramname">index</td><td>Starting index of the time component to extract </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t The extracted time component in BCD format </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00028">28</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+
+</div>
+</div>
+<a id="ad6a2d4ff2ddb25d0a7b0dbebb1a020dc" name="ad6a2d4ff2ddb25d0a7b0dbebb1a020dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6a2d4ff2ddb25d0a7b0dbebb1a020dc">&#9670;&#160;</a></span>find_month()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t find_month </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>month_str</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a month name to its corresponding number. </p>
+<p>This function takes a three-letter month name (e.g., "Jan", "Feb") and returns the corresponding month number (1-12).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">month_str</td><td>Pointer to the month name string (3 characters) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t The month number (1-12), or 0 if the month is not recognized </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00056">56</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+
+</div>
+</div>
 <a id="a4af07e6fd6d8d9e5082437f5dbdc2748" name="a4af07e6fd6d8d9e5082437f5dbdc2748"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4af07e6fd6d8d9e5082437f5dbdc2748">&#9670;&#160;</a></span>get_civic_time()</h2>
 
@@ -614,7 +689,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t* Pointer to an array containing: Sec, Min, Hr, day(1-31), Weekday, Month, Year </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is set at time of programming then maintained by RTC. If RTC power is lost make sure to rebuild and reprogram not just reprogram to maintain time. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00047">47</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00077">77</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
 
 </div>
 </div>
@@ -642,7 +717,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>rtc_error_t Status of initialization and write </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00114">114</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00144">144</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
 
 </div>
 </div>
@@ -682,7 +757,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>rtc_error_t Read status code </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Prints the result </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00182">182</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00212">212</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
 
 </div>
 </div>
@@ -716,7 +791,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>rtc_error_t Status of the alarm setting operation </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Triggers interrupt work function when time is reached </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00283">283</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00315">315</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
 
 </div>
 </div>
@@ -755,7 +830,32 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>rtc_error_t Write status code </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00228">228</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00258">258</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a44609a4db2a0b865169300dd1d3e2f51" name="a44609a4db2a0b865169300dd1d3e2f51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44609a4db2a0b865169300dd1d3e2f51">&#9670;&#160;</a></span>alarm_trigger</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile bool alarm_trigger</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_c_f85063_a_8c_source.html#l00015">15</a> of file <a class="el" href="_p_c_f85063_a_8c_source.html">PCF85063A.c</a>.</p>
 
 </div>
 </div>
