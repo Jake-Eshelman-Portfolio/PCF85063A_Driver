@@ -102,14 +102,6 @@ To integrate this driver into your Zephyr project:
    nrfjprog --reset
    ```
 
-8. **Run the Unit Tests**
-
-   To run the unit tests, follow these steps (assuming `pcf85063a_tests` is the test executable):
-
-   ```bash
-   build_unity/zephyr/pcf85063a_tests
-   ```
-
 ## Usage
 
 Basic usage examples:
@@ -126,7 +118,11 @@ ret = set_alarm(alarm_buffer, RTC_ALARM_REGISTER_SIZE);
 
 For detailed API usage, refer to the Doxygen-generated documentation: /docs/html/index.html
 
-## Dependencies
+# Testing
+- Flash the build_unity compiled binary to the board
+- Test suite will run automatically and print test results over serial output
+
+# Dependencies
 
 - Zephyr RTOS (tested with version 1.0)
 - Zephyr I2C Driver
