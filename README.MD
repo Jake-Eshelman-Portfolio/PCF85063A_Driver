@@ -45,6 +45,15 @@ To integrate this driver into your Zephyr project:
 
 ### Building the Project
 
+The most straightforward way to build the project would be to open the VScode workspace with the 
+nRF Connect extension enabled after cloning. Select the nRF Connect SDK v2.5.0 toolchain and west workspace v2.5.0.
+Then simply build using the nRF Connect build tool selecting the prj.conf, board overlay file, and extra CMAKE arguments:
+
+   - build: -DBOARD_ROOT="./zephyr/samples/sensor/pcf85063a" -DCACHED_CONF_FILE="./zephyr/samples/sensor/pcf85063a/prj.conf
+   - build_unity: -DBOARD_ROOT="./zephyr/samples/sensor/pcf85063a" -DUNIT_TEST="1" -DCONFIG_ZTEST="y" -DCACHED_CONF_FILE="./zephyr/samples/sensor/pcf85063a/prj.conf"
+
+However, below are instructions to build the project without nRF Connect and VSCode.
+
 1. **Clone the Repository**
 
    ```bash
