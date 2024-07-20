@@ -122,6 +122,8 @@ For detailed API usage, refer to the Doxygen-generated documentation: /docs/html
 - Flash the build_unity compiled binary to the board
 - Test suite will run automatically and print test results over serial output
 
+![RTC Diagram](images/RTC_test_summary.png)
+
 # Dependencies
 
 - Zephyr RTOS (tested with version 1.0)
