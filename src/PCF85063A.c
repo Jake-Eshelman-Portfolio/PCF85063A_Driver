@@ -27,7 +27,7 @@ volatile bool alarm_trigger = false;
  */
 uint8_t extract_time_component(const char *time_str, int index)
 {
-    return ((time_str[index] - '0') << BCD_SHIFT) | (time_str[index + 1] - '0');
+	return ((time_str[index] - '0') << BCD_SHIFT) | (time_str[index + 1] - '0');
 }
 
 /**
@@ -76,49 +76,49 @@ uint8_t find_month(const char *month_str)
  */
 uint8_t *get_civic_time()
 {
-    const char *time_str = __TIME__;
-    const char *date_str = __DATE__;
-    static uint8_t time_array[7];
+	const char *time_str = __TIME__;
+	const char *date_str = __DATE__;
+	static uint8_t time_array[7];
 
-    // Extract month
-    char month[DATE_MONTH_END + 1];
-    strncpy(month, date_str, DATE_MONTH_END);
-    month[DATE_MONTH_END] = '\0';
-    uint8_t decimal_month = find_month(month);
-    uint8_t bcd_month = convert_to_bcd(decimal_month);
+	// Extract month
+	char month[DATE_MONTH_END + 1];
+	strncpy(month, date_str, DATE_MONTH_END);
+	month[DATE_MONTH_END] = '\0';
+	uint8_t decimal_month = find_month(month);
+	uint8_t bcd_month = convert_to_bcd(decimal_month);
 
-    // Extract date
-    char date[3];
-    int j = DATE_DAY_START, k = 0;
-    while (date_str[j] != ' ' && k < sizeof(date) - 1) {
-        date[k++] = date_str[j++];
-    }
-    date[k] = '\0';
-    uint8_t decimal_date = atoi(date);
-    uint8_t bcd_date = convert_to_bcd(decimal_date);
+	// Extract date
+	char date[3];
+	int j = DATE_DAY_START, k = 0;
+	while (date_str[j] != ' ' && k < sizeof(date) - 1) {
+		date[k++] = date_str[j++];
+	}
+	date[k] = '\0';
+	uint8_t decimal_date = atoi(date);
+	uint8_t bcd_date = convert_to_bcd(decimal_date);
 
-    // Extract year
-    char year[YEAR_DIGITS + 1];
-    strncpy(year, &date_str[strlen(date_str) - YEAR_DIGITS], YEAR_DIGITS);
-    year[YEAR_DIGITS] = '\0';
-    uint8_t decimal_year = atoi(year);
-    uint8_t bcd_year = convert_to_bcd(decimal_year);
+	// Extract year
+	char year[YEAR_DIGITS + 1];
+	strncpy(year, &date_str[strlen(date_str) - YEAR_DIGITS], YEAR_DIGITS);
+	year[YEAR_DIGITS] = '\0';
+	uint8_t decimal_year = atoi(year);
+	uint8_t bcd_year = convert_to_bcd(decimal_year);
 
-    // Extract time
-    uint8_t hours = extract_time_component(time_str, TIME_HOURS_INDEX);
-    uint8_t minutes = extract_time_component(time_str, TIME_MINUTES_INDEX);
-    uint8_t seconds = extract_time_component(time_str, TIME_SECONDS_INDEX);
+	// Extract time
+	uint8_t hours = extract_time_component(time_str, TIME_HOURS_INDEX);
+	uint8_t minutes = extract_time_component(time_str, TIME_MINUTES_INDEX);
+	uint8_t seconds = extract_time_component(time_str, TIME_SECONDS_INDEX);
 
-    // Fill time array: sec, min, hr, day(1-31), weekday, month, year
-    time_array[SECONDS_INDEX] = seconds;
-    time_array[MINUTES_INDEX] = minutes;
-    time_array[HOURS_INDEX] = hours;
-    time_array[DATE_INDEX] = bcd_date;
-    time_array[WEEKDAY_INDEX] = 0; // Weekday is not set
-    time_array[MONTH_INDEX] = bcd_month;
-    time_array[YEAR_INDEX] = bcd_year;
+	// Fill time array: sec, min, hr, day(1-31), weekday, month, year
+	time_array[SECONDS_INDEX] = seconds;
+	time_array[MINUTES_INDEX] = minutes;
+	time_array[HOURS_INDEX] = hours;
+	time_array[DATE_INDEX] = bcd_date;
+	time_array[WEEKDAY_INDEX] = 0; // Weekday is not set
+	time_array[MONTH_INDEX] = bcd_month;
+	time_array[YEAR_INDEX] = bcd_year;
 
-    return time_array;
+	return time_array;
 }
 
 /**
@@ -149,18 +149,14 @@ rtc_error_t initialize_RTC(const uint8_t *time_array)
 	}
 
 	// Validate alarm time values
-    if (time_array[SECONDS_INDEX] > 0x59 ||
-        time_array[MINUTES_INDEX] > 0x59 ||
-        time_array[HOURS_INDEX] > 0x23 ||
-        time_array[DATE_INDEX] > 0x31 ||
-        time_array[WEEKDAY_INDEX] != 0 ||
-		time_array[MONTH_INDEX] > 0x12 ||
-        time_array[YEAR_INDEX] == 0) {
+	if (time_array[SECONDS_INDEX] > 0x59 || time_array[MINUTES_INDEX] > 0x59 ||
+	    time_array[HOURS_INDEX] > 0x23 || time_array[DATE_INDEX] > 0x31 ||
+	    time_array[WEEKDAY_INDEX] != 0 || time_array[MONTH_INDEX] > 0x12 ||
+	    time_array[YEAR_INDEX] == 0) {
 
-        LOG_ERR("Invalid time array values \n");
-        return RTC_ERROR_INVALID_PARAMETER;
-    }
-
+		LOG_ERR("Invalid time array values \n");
+		return RTC_ERROR_INVALID_PARAMETER;
+	}
 
 	pcf_85063A = DEVICE_DT_GET(DT_NODELABEL(i2c0));
 	if (!device_is_ready(pcf_85063A)) {
@@ -211,7 +207,8 @@ rtc_error_t initialize_RTC(const uint8_t *time_array)
  */
 rtc_error_t read_register(uint8_t *read_buffer, const uint8_t size, const uint8_t start_address)
 {
-	// Input validation. Buffer is circular so reads beyond 18 are valid, but should not be allowed for clarity.
+	// Input validation. Buffer is circular so reads beyond 18 are valid, but should not be
+	// allowed for clarity.
 	if (read_buffer == NULL) {
 		LOG_ERR("read_buffer was null \n");
 		return RTC_ERROR_INVALID_PARAMETER;
@@ -222,12 +219,13 @@ rtc_error_t read_register(uint8_t *read_buffer, const uint8_t size, const uint8_
 		return RTC_ERROR_INVALID_PARAMETER;
 	}
 
-	if (start_address < 0 || start_address > RTC_REGISTER_SIZE ) {
-		LOG_ERR("Invalid start address: %d, start address must be between 0 and 17 \n", start_address);
+	if (start_address < 0 || start_address > RTC_REGISTER_SIZE) {
+		LOG_ERR("Invalid start address: %d, start address must be between 0 and 17 \n",
+			start_address);
 		return RTC_ERROR_INVALID_PARAMETER;
 	}
 
-	if((start_address + size) > RTC_REGISTER_SIZE) {
+	if ((start_address + size) > RTC_REGISTER_SIZE) {
 		LOG_ERR("Invalid read range, outranged RTC registers");
 		return RTC_ERROR_INVALID_PARAMETER;
 	}
@@ -255,9 +253,11 @@ rtc_error_t read_register(uint8_t *read_buffer, const uint8_t size, const uint8_
  * @param start_address Starting address to write to
  * @return rtc_error_t Write status code
  */
-rtc_error_t write_register(const uint8_t *write_buffer, const uint8_t size, const uint8_t start_address)
+rtc_error_t write_register(const uint8_t *write_buffer, const uint8_t size,
+			   const uint8_t start_address)
 {
-	// Input validation. Buffer is circular so writes beyond 18 are valid, but should not be allowed for clarity.
+	// Input validation. Buffer is circular so writes beyond 18 are valid, but should not be
+	// allowed for clarity.
 	if (write_buffer == NULL) {
 		LOG_ERR("Write buffer was null \n");
 		return RTC_ERROR_INVALID_PARAMETER;
@@ -268,12 +268,13 @@ rtc_error_t write_register(const uint8_t *write_buffer, const uint8_t size, cons
 		return RTC_ERROR_INVALID_PARAMETER;
 	}
 
-	if (start_address < 0 || start_address > RTC_REGISTER_SIZE ) {
-		LOG_ERR("Invalid start address: %d, start address must be between 0 and 17 \n", start_address);
+	if (start_address < 0 || start_address > RTC_REGISTER_SIZE) {
+		LOG_ERR("Invalid start address: %d, start address must be between 0 and 17 \n",
+			start_address);
 		return RTC_ERROR_INVALID_PARAMETER;
 	}
 
-	if((start_address + size) > RTC_REGISTER_SIZE) {
+	if ((start_address + size) > RTC_REGISTER_SIZE) {
 		LOG_ERR("Invalid write range, outranged RTC registers \n");
 		return RTC_ERROR_INVALID_PARAMETER;
 	}
@@ -290,7 +291,7 @@ rtc_error_t write_register(const uint8_t *write_buffer, const uint8_t size, cons
 }
 
 /**
- * @brief Placeholder function, currently reads all registers when alarm is called 
+ * @brief Placeholder function, currently reads all registers when alarm is called
  * and sets alarm_trigger to true for validation in testing
  *
  * @param work Pointer to the work structure
@@ -301,7 +302,6 @@ static void alarm_work_handler(struct k_work *work)
 	read_register(read_buffer, RTC_REGISTER_SIZE, 0X00);
 	alarm_trigger = true;
 }
-
 
 /**
  * @brief Set the alarm with a given time in BCD format
@@ -315,40 +315,42 @@ static void alarm_work_handler(struct k_work *work)
 rtc_error_t set_alarm(const uint8_t *alarm_buffer, const size_t size)
 {
 	// Input validation
-    if (alarm_buffer == NULL) {
-        LOG_ERR("Alarm buffer is NULL \n");
-        return RTC_ERROR_INVALID_PARAMETER;
-    }
+	if (alarm_buffer == NULL) {
+		LOG_ERR("Alarm buffer is NULL \n");
+		return RTC_ERROR_INVALID_PARAMETER;
+	}
 
-    if (size != RTC_ALARM_REGISTER_SIZE) {
-        LOG_ERR("Invalid alarm buffer size. Expected %d, got %d \n", 
-                RTC_ALARM_REGISTER_SIZE, size);
-        return RTC_ERROR_INVALID_PARAMETER;
-    }
+	if (size != RTC_ALARM_REGISTER_SIZE) {
+		LOG_ERR("Invalid alarm buffer size. Expected %d, got %d \n",
+			RTC_ALARM_REGISTER_SIZE, size);
+		return RTC_ERROR_INVALID_PARAMETER;
+	}
 
-    // Validate alarm time values
-    if (alarm_buffer[SECONDS_INDEX] > 0x59 ||
-        alarm_buffer[MINUTES_INDEX] > 0x59 ||
-        alarm_buffer[HOURS_INDEX] > 0x23 ||
-        alarm_buffer[DATE_INDEX] > 0x31 ||
-        alarm_buffer[WEEKDAY_INDEX] != 0) {
-        LOG_ERR("Invalid alarm time values \n");
-        return RTC_ERROR_INVALID_PARAMETER;
-    }
+	// Validate alarm time values
+	if (alarm_buffer[SECONDS_INDEX] > 0x59 || alarm_buffer[MINUTES_INDEX] > 0x59 ||
+	    alarm_buffer[HOURS_INDEX] > 0x23 || alarm_buffer[DATE_INDEX] > 0x31 ||
+	    alarm_buffer[WEEKDAY_INDEX] != 0) {
+		LOG_ERR("Invalid alarm time values \n");
+		return RTC_ERROR_INVALID_PARAMETER;
+	}
 
 	// Set the control register
 	uint8_t control_2[ALARM_CONTROL_REGISTER], ret = 0;
 	control_2[0] = ENABLE_ALARM;
 	ret = write_register(control_2, sizeof(control_2), ALARM_CONTROL_REGISTER);
 	if (ret != RTC_SUCCESS) {
-		LOG_ERR("Error: %d. Failed to set alarm control register due to burst write failure \n", ret);
+		LOG_ERR("Error: %d. Failed to set alarm control register due to burst write "
+			"failure \n",
+			ret);
 		return RTC_ERROR_I2C_WRITE;
 	}
 
 	// Set the alarm register
 	ret = write_register(alarm_buffer, size, RTC_ALARM_REGISTER_ADDRESS);
 	if (ret != RTC_SUCCESS) {
-		LOG_ERR("Error: %d. Failed to set alarm time register due to burst write failure \n", ret);
+		LOG_ERR("Error: %d. Failed to set alarm time register due to burst write failure "
+			"\n",
+			ret);
 		return RTC_ERROR_I2C_WRITE;
 	}
 	k_work_init(&alarm_work, alarm_work_handler);
