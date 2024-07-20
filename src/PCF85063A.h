@@ -1,9 +1,6 @@
 #ifndef PCF85063_H
 #define PCF85063_H
 
-#include <zephyr/device.h>
-#include <zephyr/drivers/gpio.h>
-
 #define SECONDS_INDEX 0
 #define MINUTES_INDEX 1
 #define HOURS_INDEX 2
