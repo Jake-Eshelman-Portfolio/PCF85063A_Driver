@@ -37,6 +37,11 @@ To integrate this driver into your Zephyr project:
 - nRF Connect SDK 2.5.0
 - GNU Arm Embedded Toolchain
 - CMake
+- Doxygen
+
+### Re-generating Documentation
+- API documentation is provided through /doc/html/index.html, but can be regenerated locally
+   - In root directory run doxygen Doxyfile
 
 ### Building the Project
 
