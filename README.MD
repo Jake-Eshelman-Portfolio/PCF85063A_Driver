@@ -14,7 +14,7 @@ embedded systems.
 - Alarm configuration and handling
 - Register-level read and write operations over I2C
 - Unit testing through Unity/Ztest
-- Documentation handled by Doxygen: /docs/html/index.html
+- Documentation handled by Doxygen: /doc/html/index.html
 
 ## Architecture
 
