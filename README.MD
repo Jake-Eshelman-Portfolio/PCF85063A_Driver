@@ -12,7 +12,7 @@ embedded systems.
 - RTC initialization and configuration
 - Time setting and reading
 - Alarm configuration and handling
-- Register-level read and write operations
+- Register-level read and write operations over I2C
 - Unit testing through Unity/Ztest
 - Documentation handled by Doxygen: /docs/html/index.html
 
