@@ -20,8 +20,7 @@ embedded systems.
 
 The driver is structured around core RTC operations, 
 utilizing Zephyr's I2C and GPIO subsystems with asynchronous interrupt handling. 
-It employs a modular design with separate functions for each major operation, 
-enhancing maintainability and allowing for easy expansion of functionality. 
+It employs a modular design with separate functions for each major operation.
 
 ## Integration
 
@@ -138,11 +137,6 @@ For detailed API usage, refer to the Doxygen-generated documentation: /docs/html
 
 ![RTC Diagram](images/RTC_test_summary.png)
 
-# Dependencies
-
-- Zephyr RTOS (tested with version 1.0)
-- Zephyr I2C Driver
-- Zephyr GPIO Driver
 
 ## Known Limitations
 
