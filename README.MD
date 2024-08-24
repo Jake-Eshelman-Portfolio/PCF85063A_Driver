@@ -4,8 +4,8 @@
 
 This driver provides an interface for the PCF85063A Real-Time Clock (RTC) chip, 
 designed for use with the Zephyr RTOS, and was built on the nRF52dk with testing 
-through Ztest. It enables precise timekeeping and alarm functionality in 
-embedded systems.
+through Ztest. My goal with this project was to build skills in Zephyr RTOS, the Ztest
+framework, I2C driver development, and Doxygen document generation.
 
 ## Key Features
 
